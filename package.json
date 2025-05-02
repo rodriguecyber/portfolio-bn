@@ -1,0 +1,51 @@
+{
+  "name": "backend-portifolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/server.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "bcryptjs": "latest",
+    "class-variance-authority": "^0.7.1",
+    "cloudinary": "latest",
+    "clsx": "^2.1.1",
+    "cmdk": "1.0.4",
+    "cookie-parser": "latest",
+    "cors": "latest",
+    "date-fns": "latest",
+    "dotenv": "latest",
+    "embla-carousel-react": "8.5.1",
+    "express": "latest",
+    "express-mongo-sanitize": "latest",
+    "express-rate-limit": "latest",
+    "helmet": "latest",
+    "hpp": "latest",
+    "jsonwebtoken": "latest",
+    "mongoose": "latest",
+    "morgan": "latest",
+    "multer": "latest",
+    "multer-storage-cloudinary": "latest",
+    "os": "latest",
+    "path": "latest",
+    "rod-fileupload": "^1.1.2",
+    "slugify": "latest",
+    "sonner": "^1.7.1",
+    "vaul": "^0.9.6",
+    "winston": "latest",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/hpp": "^0.2.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22",
+    "typescript": "^5"
+  }
+}
