@@ -3,4 +3,4 @@ yarn.lock
 /.env
 logs 
 package-lock.json
- v
+dist
