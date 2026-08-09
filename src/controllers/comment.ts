@@ -2,6 +2,7 @@ import type { Request, Response } from "express"
 import mongoose from "mongoose"
 import Comment from "../models/Comment"
 import { asyncHandler } from "../utils/errorHandler"
+import { isContentType, type ContentType } from "../utils/contentType"
 
 // @desc    Get comments for a content
 // @route   GET /api/comments/:contentType/:contentId
@@ -10,20 +11,18 @@ export const getComments = asyncHandler(async (req: Request, res: Response) => {
   const { contentType, contentId } = req.params
 
   // Validate content type
-  if (!["blog", "project"].includes(contentType)) {
+  if (!isContentType(contentType) || typeof contentId !== "string") {
     return res.status(400).json({
       success: false,
       error: "Invalid content type",
     })
   }
 
-  // For public access, only show approved comments
-  const query = { contentType, contentId, approved: true }
+  const query: { contentType: ContentType; contentId: string; approved?: boolean } = { contentType, contentId }
 
-  // If admin is requesting, show all comments
-  if (req.user && req.user.role === "admin") {
-    //@ts-expect-error error
-    delete query.approved 
+  // For public access, only show approved comments. Admins see all of them.
+  if (!(req.user && req.user.role === "admin")) {
+    query.approved = true
   }
 
   // Get top-level comments (no parentId)
@@ -59,7 +58,7 @@ export const addComment = asyncHandler(async (req: Request, res: Response) => {
   const { parentId, author, content } = req.body
 
   // Validate content type
-  if (!["blog", "project"].includes(contentType)) {
+  if (!isContentType(contentType) || typeof contentId !== "string") {
     return res.status(400).json({
       success: false,
       error: "Invalid content type",

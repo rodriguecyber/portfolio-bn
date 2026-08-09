@@ -66,7 +66,7 @@ const BlogSchema = new Schema<Blog>(
 )
 
 // Create slug from title before saving
-BlogSchema.pre("save", function (next) {
+BlogSchema.pre("save", function () {
   if (this.isModified("title")) {
     this.slug = slugify(this.title, { lower: true, strict: true })
   }
@@ -74,8 +74,6 @@ BlogSchema.pre("save", function (next) {
   if (this.isModified("published") && this.published && !this.publishedAt) {
     this.publishedAt = new Date()
   }
-
-  next()
 })
 
-export default mongoose.model<Blog>("Blog", BlogSchema)
+export default mongoose.model("Blog", BlogSchema)

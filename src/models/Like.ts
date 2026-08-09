@@ -23,4 +23,4 @@ const LikeSchema = new Schema<Like>(
 // Create a compound index to prevent duplicate likes
 LikeSchema.index({ contentId: 1, contentType: 1, ipAddress: 1 }, { unique: true })
 
-export default mongoose.model<Like>("Like", LikeSchema)
+export default mongoose.model("Like", LikeSchema)

@@ -109,7 +109,7 @@ const ProjectSchema = new Schema<Project>(
 )
 
 // Create slug from title before saving
-ProjectSchema.pre("save", function (next) {
+ProjectSchema.pre("save", function () {
   if (this.isModified("title")) {
     this.slug = slugify(this.title, { lower: true, strict: true })
   }
@@ -117,8 +117,6 @@ ProjectSchema.pre("save", function (next) {
   if (this.isModified("published") && this.published && !this.publishedAt) {
     this.publishedAt = new Date()
   }
-
-  next()
 })
 
-export default mongoose.model<Project>("Project", ProjectSchema)
+export default mongoose.model("Project", ProjectSchema)

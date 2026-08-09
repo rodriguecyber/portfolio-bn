@@ -275,7 +275,7 @@ export const uploadProjectScreenshot = asyncHandler(async (req: any, res: Respon
 // @access  Private (Admin)
 export const removeProjectScreenshot = asyncHandler(async (req: Request, res: Response) => {
   const project = await Project.findById(req.params.id)
-  const index = Number.parseInt(req.params.index)
+  const index = Number.parseInt(String(req.params.index))
 
   if (!project) {
     return res.status(404).json({
@@ -367,8 +367,8 @@ export const addVersionMedia = asyncHandler(async (req: any, res: Response) => {
 // @access  Private (Admin)
 export const removeVersionMedia = asyncHandler(async (req: Request, res: Response) => {
   const project = await Project.findById(req.params.id)
-  const versionIndex = Number.parseInt(req.params.versionIndex)
-  const mediaIndex = Number.parseInt(req.params.mediaIndex)
+  const versionIndex = Number.parseInt(String(req.params.versionIndex))
+  const mediaIndex = Number.parseInt(String(req.params.mediaIndex))
 
   if (!project) {
     return res.status(404).json({

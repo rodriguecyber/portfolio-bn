@@ -1,8 +1,12 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Schema, type Model } from "mongoose"
 import bcrypt from "bcryptjs"
 import type { User } from "../types"
 
-const UserSchema = new Schema<User>(
+export interface UserMethods {
+  comparePassword(candidatePassword: string): Promise<boolean>
+}
+
+const UserSchema = new Schema<User, Model<User>, UserMethods>(
   {
     name: {
       type: String,
@@ -33,14 +37,13 @@ const UserSchema = new Schema<User>(
 )
 
 // Hash password before saving
-UserSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function () {
   if (!this.isModified("password")) {
-    return next()
+    return
   }
 
   const salt = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, salt)
-  next()
 })
 
 // Compare password method
@@ -48,7 +51,4 @@ UserSchema.methods.comparePassword = async function (candidatePassword: string):
   return await bcrypt.compare(candidatePassword, this.password)
 }
 
-export default mongoose.model<User>(
-  "User",
-  UserSchema,
-)
+export default mongoose.model("User", UserSchema)

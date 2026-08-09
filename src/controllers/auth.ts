@@ -59,7 +59,6 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
   }
 
   // Check if password matches
-    //@ts-expect-error error
   const isMatch = await user.comparePassword(password)
 
   if (!isMatch) {

@@ -1,6 +1,12 @@
 import type { Request, Response } from "express"
 import Like from "../models/Like"
 import { asyncHandler } from "../utils/errorHandler"
+import { isContentType } from "../utils/contentType"
+
+const getIpAddress = (req: Request): string => {
+  const forwardedFor = req.headers["x-forwarded-for"]
+  return req.ip || (Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor) || "unknown"
+}
 
 // @desc    Get likes count for a content
 // @route   GET /api/likes/:contentType/:contentId
@@ -9,7 +15,7 @@ export const getLikesCount = asyncHandler(async (req: Request, res: Response) =>
   const { contentType, contentId } = req.params
 
   // Validate content type
-  if (!["blog", "project"].includes(contentType)) {
+  if (!isContentType(contentType) || typeof contentId !== "string") {
     return res.status(400).json({
       success: false,
       error: "Invalid content type",
@@ -29,10 +35,10 @@ export const getLikesCount = asyncHandler(async (req: Request, res: Response) =>
 // @access  Public
 export const checkLike = asyncHandler(async (req: Request, res: Response) => {
   const { contentType, contentId } = req.params
-  const ipAddress = req.ip || req.headers["x-forwarded-for"] || "unknown"
+  const ipAddress = getIpAddress(req)
 
   // Validate content type
-  if (!["blog", "project"].includes(contentType)) {
+  if (!isContentType(contentType) || typeof contentId !== "string") {
     return res.status(400).json({
       success: false,
       error: "Invalid content type",
@@ -52,10 +58,10 @@ export const checkLike = asyncHandler(async (req: Request, res: Response) => {
 // @access  Public
 export const toggleLike = asyncHandler(async (req: Request, res: Response) => {
   const { contentType, contentId } = req.params
-  const ipAddress = req.ip || req.headers["x-forwarded-for"] || "unknown"
+  const ipAddress = getIpAddress(req)
 
   // Validate content type
-  if (!["blog", "project"].includes(contentType)) {
+  if (!isContentType(contentType) || typeof contentId !== "string") {
     return res.status(400).json({
       success: false,
       error: "Invalid content type",
